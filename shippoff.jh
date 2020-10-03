@@ -1,0 +1,115 @@
+
+application {
+  config {
+    baseName shippoff,
+    applicationType monolith,
+    packageName com.shippoff,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    clientFramework react
+  }
+  entities *
+}
+
+entity Customer {
+	number Id,
+    number Phone,
+    string Email
+}
+entity CustomerData {
+	number Customerid,
+	string Name,
+    string Rut
+}
+relationship OneToOne {
+  Customer to CustomerData
+}
+
+entity Freight {
+	number FreightId
+	number Customerid,
+	string From,
+    string To,
+    number LoadTypeId,
+    string DatesProposal,
+    number OfferIdSelected
+}
+
+entity FreightData {
+	number FreightId,
+    string Description,
+    string Photo
+}
+
+relationship OneToMany {
+  Customer to Freight
+  Freight to FreightData
+  Freight to LoadType
+}
+relationship OneToOne {
+  Freight to FreightCharge
+}
+
+entity FreightCharge {
+	number FreightId,
+    number OfferId,
+    currency FreigthPrice
+}
+relationship OneToOne {
+  Freight to Offer
+}
+
+entity Auction {
+	number AuctionId,
+    number FreightId,
+    datetime InitialTime,
+    datetime EndTime    
+}
+relationship OneToMany {
+  Freight to Auction
+}
+
+entity Driver {
+	number DriverId,
+    number CompanyId,
+    string Rut,
+    number TruckTypeId,
+    string RegistrationNumber,
+}
+relationship OneToMany {
+  Driver to TruckType
+}
+
+entity Offer {
+	number OfferId,
+    number AuctionId,
+    number DriverId,
+    string DatesProposal,
+    currency OfferPrice
+}
+relationship OneToMany {
+  Auction to Offer,
+  Driver to Offer,
+  TruckLoadType to TruckType,
+  TruckLoadType to LoadType
+}
+
+entity LoadType {
+	number LoadTypeId,
+    string LoadType
+}
+
+entity TruckType {
+	number TruckTypeId,
+    string TruckType,
+    string TruckIcon
+}
+
+entity TruckLoadType {
+	number TruckTypeId,
+    number LoadTypeId,
+}
+
+
+
+    
